@@ -10,24 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-<<<<<<< HEAD
-import os, random, string
-from pathlib import Path
-from dotenv import load_dotenv
-=======
 import os, environ
->>>>>>> 3863dbc (Release v1.0.4)
 
 load_dotenv()  # take environment variables from .env.
 
-<<<<<<< HEAD
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-=======
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
->>>>>>> 3863dbc (Release v1.0.4)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
