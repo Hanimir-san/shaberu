@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+    'pipeline',
     "home",
 ]
 
@@ -152,9 +152,29 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'pipeline.storage.PipelineManifestStorage'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# Django pipeline configuration
+PIPELINE = dict()
+PIPELINE['PIPELINE_ENABLED'] = True
+PIPELINE['CSS_COMPRESSOR'] = 'pipeline.compressors.csshtmljsminify.CssHtmlJsMinifyCompressor'
+PIPELINE['JS_COMPRESSOR'] = 'pipeline.compressors.csshtmljsminify.CssHtmlJsMinifyCompressor'
+PIPELINE['MIMETYPES'] = (
+  ('text/coffeescript', '.coffee'),
+  ('text/less', '.less'),
+  ('text/javascript', '.js'),
+  ('text/x-sass', '.sass'),
+  ('text/x-scss', '.scss'),
+  ('image/svg+xml', '.svg'),
+)
 
 #if not DEBUG:
 #    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
