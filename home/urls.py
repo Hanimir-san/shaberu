@@ -51,4 +51,5 @@ urlpatterns = [
 
     # Ajax
     path('ajax/get-chat-response/', views.ChatMainAjax.as_view(), name='chat_main'),
+    path('ajax/process-chat-audio/', views.ChatMainAudioAjax.as_view(), name='chat_audio'),
 ]

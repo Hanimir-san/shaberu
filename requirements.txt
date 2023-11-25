@@ -1,6 +1,9 @@
+# TORCH ON WINDOWS REQUIRES PYTHON 3.11!
+
 # System
 python-dotenv
 whitenoise
+soundfile
 
 # AI components
 gpt4all
@@ -18,7 +21,6 @@ pycodestyle
 pytz
 sqlparse
 toml
-whitenois
 django-environ
 django-pipeline
 psycopg2

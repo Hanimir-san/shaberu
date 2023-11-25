@@ -1,3 +1,9 @@
+import io
+import scipy
+import soundfile
+import os
+import tempfile
+
 from django.shortcuts import render, redirect
 from theme_material_kit.forms import LoginForm, RegistrationForm, UserPasswordResetForm, UserSetPasswordForm, UserPasswordChangeForm
 from django.contrib.auth import logout
@@ -7,10 +13,10 @@ from django.views.generic.base import TemplateView
 
 from django.contrib.auth import views as auth_views
 
-import scipy
-
 from gpt4all import GPT4All
+import speech_recognition as sr
 from transformers import AutoProcessor, BarkModel
+from speech_recognition.exceptions import UnknownValueError
 
 
 # Create your views here.
@@ -125,6 +131,44 @@ def modals(request):
 
 def tooltips(request):
   return render(request, 'sections/attention-catchers/tooltips-popovers.html')
+
+
+class ChatMainAudioAjax(View):
+    
+    def post(self, request, *args, **kwargs):
+        
+        if not request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+            return HttpResponseBadRequest()
+        
+        input = request.FILES.get('chat-user-audio')
+        file = input.file
+        file.seek(0)
+
+        # Write data to temporary file as wav
+        data, samplerate = soundfile.read(file)
+        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp_file_obj:
+          tmp_name = tmp_file_obj.name
+        soundfile.write(
+            tmp_name, 
+            data, 
+            samplerate=samplerate, 
+            subtype='PCM_16', 
+            format='wav'
+        )
+
+        # Send data to speec recognizer
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(tmp_name) as source:
+          data = recognizer.record(source)
+        
+        try:
+          output = recognizer.recognize_google(data)
+        except UnknownValueError:
+          output = "Sorry, we couldn't hear what you said!"
+
+        data = {'result': output}
+        return JsonResponse(data)
+
 
 class ChatMainAjax(View):
     
