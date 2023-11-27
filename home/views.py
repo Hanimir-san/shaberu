@@ -5,13 +5,16 @@ import os
 import tempfile
 
 from django.shortcuts import render, redirect
-from theme_material_kit.forms import LoginForm, RegistrationForm, UserPasswordResetForm, UserSetPasswordForm, UserPasswordChangeForm
+from django.template.loader import render_to_string
+
 from django.contrib.auth import logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.views import View
 from django.views.generic.base import TemplateView
 
 from django.contrib.auth import views as auth_views
+
+from home.forms import LoginForm, RegistrationForm, UserPasswordResetForm, UserSetPasswordForm, UserPasswordChangeForm
 
 from gpt4all import GPT4All
 import speech_recognition as sr
@@ -156,7 +159,7 @@ class ChatMainAudioAjax(View):
             format='wav'
         )
 
-        # Send data to speec recognizer
+        # Send data to speech recognizer
         recognizer = sr.Recognizer()
         with sr.AudioFile(tmp_name) as source:
           data = recognizer.record(source)
@@ -175,11 +178,31 @@ class ChatMainAjax(View):
     def post(self, request, *args, **kwargs):
         if not request.headers.get('x-requested-with') == 'XMLHttpRequest': 
             return HttpResponseBadRequest()
-        input = request.POST.get('chat-user-input')
+        input = request.POST.get('chat-user-resp')
+        print(input)
 
         # Text generation
 
         model = GPT4All("orca-mini-3b-gguf2-q4_0.gguf")
         output = model.generate(input)
+        print(output)
         data = {'result': output}
+        return JsonResponse(data)
+
+class ChatRowAjax(View):
+    
+    def post(self, request, *args, **kwargs):
+        if not request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+            return HttpResponseBadRequest()
+        user_resp = request.POST.get('chat-user-resp')
+        bot_resp = request.POST.get('chat-bot-resp')
+        print(user_resp)
+        print(bot_resp)
+
+        # Get row partial
+        partial_ctx = {'user_resp': user_resp, 'bot_resp': bot_resp}
+        partial_url = "pages/partials/chat-response-row.html"
+        partial_render = render_to_string(partial_url, partial_ctx)
+        data = {'result': partial_render}
+        print(data)
         return JsonResponse(data)

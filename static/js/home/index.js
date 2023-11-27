@@ -131,10 +131,6 @@ const audioRecorder = {
       If a DOM element which is removed is reference-free (no references pointing to it), the element itself is picked
       up by the garbage collector as well as any event handlers/listeners associated with it.
       getEventListeners(audioRecorder.mediaRecorder) will return an empty array of events.*/
-  },
-  /** Cancel audio recording*/
-  cancel: function () {
-  //...
   }
 }
 
@@ -224,9 +220,9 @@ function stopAudioRecording() {
           }).then(
             response => response.json()
           ).then(
-            function(result) {
+            function(responseData) {
               const input = document.getElementById('chat-input-main');
-              input.setAttribute('value', result.result)
+              input.setAttribute('value', responseData.result)
           });
 
           //Do something with the recorded audio
@@ -273,7 +269,7 @@ function loadChatResponse() {
     console.log(requestUrl);
     console.log(csrfToken)
 
-    const response = fetch(requestUrl, {
+    fetch(requestUrl, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -282,9 +278,56 @@ function loadChatResponse() {
       redirect: "follow",
       referrerPolicy: "no-referrer",
       body: requestData,
-    }).then(function(data) {
-      console.log(data);
+    }).then(
+      response => response.json()
+    ).then(function(responseData) {
+      console.log(responseData)
+      const rowRequestData = new FormData();
+      rowRequestData.append('chat-user-resp', responseData.result);
+
+      getCharRow(rowRequestData).then(function(rowResponseData) {
+        const chatRowPartial = rowResponseData.result;
+        const chatContainer = document.getElementById('chat-resp-container');
+        console.log(chatRowPartial)
+        chatContainer.innerHTML = chatRowPartial;
+      });
+      
+
     });
 }
 
-document.getElementById("chat-input-main").addEventListener("keyup", delayFunction(700, loadChatResponse)); 
+function getCharRow(requestData) {
+  
+  let out;
+
+  const baseUrl = getBaseUrl();
+  const endpointUrl = '/ajax/get-chat-row/';
+  const requestUrl = baseUrl + endpointUrl;
+  const csrfToken = getCookie('csrftoken');
+  const requestHeader = {
+    // 'Content-Type': 'multipart/form-data',
+    "X-Requested-With": "XMLHttpRequest",
+    'X-CSRFTOKEN': csrfToken
+  }
+
+  return fetch(requestUrl, {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: requestHeader,
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: requestData,
+  }).then(
+    response => response.json()
+  )
+}
+
+document.getElementById("chat-submit-main").addEventListener("click", delayFunction(700, loadChatResponse));
+document.getElementById("chat-input-main").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("chat-submit-main").click();
+  }
+}); 

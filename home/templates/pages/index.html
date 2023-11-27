@@ -1,7 +1,7 @@
 {% extends 'layouts/base_background.html' %}
 {% load static %}
 
-{% block title %} Material Kit 2 by Creative Tim {% endblock title %}
+{% block title %} Shaberu Conversation Trainer {% endblock title %}
 
 {% block body %} class="index-page bg-gray-200" {% endblock body %}
 
@@ -38,14 +38,18 @@
             <button class="btn btn-outline-secondary mb-0 d-none" type="button" id="chat-main-audio-stop">
               <span class="material-symbols-outlined">mic_off</span>
             </button>
-            <input type="text" name="chat-user-input" class="form-control" id="chat-input-main" placeholder="Start a conversation!">
-            <button class="btn btn-sm btn-outline-secondary mb-0" type="button" id="button-addon1">Submit</button>
+            <input type="text" name="chat-user-resp" class="form-control" id="chat-input-main" placeholder="Start a conversation!">
+            <button class="btn btn-sm btn-outline-secondary mb-0" type="button" id="chat-submit-main">Submit</button>
           </div>
 
         </div>
       </div>
     </form>
   </div>
+
+  <div class="container" id="chat-resp-container">
+  </div>
+
 </section>
 
 </div>

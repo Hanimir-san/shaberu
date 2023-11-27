@@ -50,6 +50,7 @@ urlpatterns = [
     path('tooltips/', views.tooltips, name='tooltips'),
 
     # Ajax
-    path('ajax/get-chat-response/', views.ChatMainAjax.as_view(), name='chat_main'),
-    path('ajax/process-chat-audio/', views.ChatMainAudioAjax.as_view(), name='chat_audio'),
+    path('ajax/get-chat-response/', views.ChatMainAjax.as_view(), name='get_chat_main'),
+    path('ajax/process-chat-audio/', views.ChatMainAudioAjax.as_view(), name='process_chat_audio'),
+    path('ajax/get-chat-row/', views.ChatRowAjax.as_view(), name='get_chat_row'),
 ]
