@@ -9,20 +9,26 @@ from gpt4all import GPT4All
 
 # Register your models here.
 
+# TODO: Research Django constants best practices
+MODELS_DIR = os.path.join(settings.MEDIA_ROOT, 'system', 'models')
+
 @admin.action(description="Download selected models")
 def get_model(modeladmin, request, queryset):
-    # TODO: fix
+    # TODO: Move to asynch task
     for record in queryset.iterator():
         model_type = record.type
         model_name = record.name
-        model_dir = os.path.join(settings.MEDIA_ROOT, record._meta.get_field('file').upload_to)
-        model_path = os.path.join(model_dir, model_name)
+        if not os.path.exists(MODELS_DIR):
+            os.makedirs(MODELS_DIR)
         if model_type == LanguageModel.CHOICE_GPT4ALL:
-            GPT4All.download_model(model_name, model_path)
+            model_path = GPT4All.retrieve_model(model_name, MODELS_DIR).get('path')
+            record.file = model_path
+            record.save()
         if model_type == LanguageModel.CHOICE_BARK:
             pass
         else:
             pass
+    # TODO: Show Django message upon finish
 
 @admin.register(LanguageModel)
 class LanguageModelAdmin(admin.ModelAdmin):

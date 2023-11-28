@@ -169,7 +169,10 @@ cython_debug/
 /node_modules/
 build/
 env
+
+# Django files
 /staticfiles/
+/files/
 
 # Source
 *.sqlite*

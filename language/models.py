@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.urls import reverse
 
@@ -17,7 +19,7 @@ class LanguageModel(Timestamp):
 
     name = models.CharField(max_length=50, verbose_name="Model name", blank=False, default='')
     type = models.CharField(max_length=20, choices=CHOICES_TYPE, verbose_name="Model type", blank=False, default=CHOICE_BLANK)
-    file = models.FileField(upload_to="system/models/", verbose_name="Model path", blank=True, default='')
+    file = models.CharField(max_length=255, verbose_name="Model path", blank=True, default='')
 
     def __str__(self):
         return self.name
