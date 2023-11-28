@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class Timestamp(models.Model):
 
-    cr_date = models.DateField(auto_now_add=True, verbose_name="Created at")
+    cr_date = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
 
     class Meta:
         abstract = True
