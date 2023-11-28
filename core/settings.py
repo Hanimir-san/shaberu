@@ -49,8 +49,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'pipeline',
+    "pipeline",
     "home",
+    "language",
+    "history",
 ]
 
 MIDDLEWARE = [
@@ -161,6 +163,10 @@ STATICFILES_FINDERS = (
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# Media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
+MEDIA_URL = '/files/'
 
 # Django pipeline configuration
 PIPELINE = dict()
