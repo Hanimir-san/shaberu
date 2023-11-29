@@ -1,5 +1,8 @@
 import datetime
+import errno
 import json
+import os
+import sys
 from django.template import Context
 from django.utils import translation
 
@@ -473,6 +476,7 @@ def is_valid_path(pathname):
     `True` if the passed pathname is a valid pathname for the current OS;
     `False` otherwise.
     '''
+    ERROR_INVALID_NAME = 123
     try:
         if not isinstance(pathname, str) or not pathname:
             return False

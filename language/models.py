@@ -22,6 +22,7 @@ class LanguageModel(Timestamp):
     name = models.CharField(max_length=50, verbose_name="Model name", blank=False, default='')
     type = models.CharField(max_length=20, choices=CHOICES_TYPE, verbose_name="Model type", blank=False, default=CHOICE_BLANK)
     file = models.CharField(max_length=255, verbose_name="Model path", blank=True, default='', validators=[validate_path])
+    is_default = models.BooleanField( verbose_name="Is default", default=False)
 
     def __str__(self):
         return self.name
@@ -33,3 +34,7 @@ class LanguageModel(Timestamp):
         indexes = [models.Index(fields=["type"])]
         verbose_name = "Language model"
         verbose_name_plural = "Language models"
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'type'], name='Unique named model'),
+            models.UniqueConstraint(fields=['name', 'type', 'is_default'], name='Unique default model')
+        ]
