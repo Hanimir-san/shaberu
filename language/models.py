@@ -5,6 +5,8 @@ from django.urls import reverse
 
 from home.models import Timestamp
 
+from language.validators import validate_path
+
 
 # Create your models here.
 class LanguageModel(Timestamp):
@@ -19,7 +21,7 @@ class LanguageModel(Timestamp):
 
     name = models.CharField(max_length=50, verbose_name="Model name", blank=False, default='')
     type = models.CharField(max_length=20, choices=CHOICES_TYPE, verbose_name="Model type", blank=False, default=CHOICE_BLANK)
-    file = models.CharField(max_length=255, verbose_name="Model path", blank=True, default='')
+    file = models.CharField(max_length=255, verbose_name="Model path", blank=True, default='', validators=[validate_path])
 
     def __str__(self):
         return self.name

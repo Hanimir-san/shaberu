@@ -331,3 +331,14 @@ document.getElementById("chat-input-main").addEventListener("keypress", function
     document.getElementById("chat-submit-main").click();
   }
 }); 
+
+function delParentCard() {
+  console.log()
+  const cardEle = this.closest(".card")
+  $(cardEle).slideToggle(500, () => cardEle.remove());
+}
+
+const msgEles = document.getElementsByClassName("overlay-msg-close"); 
+for (let ele of msgEles) {
+  ele.addEventListener("click", delParentCard);
+}

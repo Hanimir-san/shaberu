@@ -1,0 +1,19 @@
+.overlay-msg {
+    z-index: 10000;
+  }
+
+.overlay-msg-success-header {
+    background-color: rgba(25, 135, 8, 0.5);
+}
+
+.overlay-msg-warning-header {
+    background-color: rgba(255, 193, 7, 0.5);
+}
+
+.overlay-msg-danger-header {
+    background-color: rgba(220, 53, 69, 0.5);
+}
+
+.overlay-msg-info-header {
+    background-color: rgba(13, 110, 253, 0.5);
+}
