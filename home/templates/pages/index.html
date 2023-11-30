@@ -25,52 +25,36 @@
 <body>
 
   <!-- DJAGO MESSAGES POPUP -->
-  {% if messages %}
-  {% for message in messages %}
-  <div class="card position-fixed start-50 bottom-0 translate-middle-x overlay-msg">
-    <div class="card-header overlay-msg-success-header">
-      Success!
-      <button class="btn-close float-end" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="card-body">
-      
-      <p class="card-text">{{ message }}</p>
-      
-    </div>
-  </div>
-  
-  {% endif %}
-
-    <div class="position-fixed start-50 bottom-0 w-40 translate-middle-x overlay-msg">
-      {% for message in messages %}
-      <div class="card">
-        {% if message.level == "danger" %}
-        <div class="card-header overlay-msg-danger-header">
-          Error
-          <button class="btn-close float-end overlay-msg-close" type="button" aria-label="Close"></button>
-        </div>
-        {% elif message.level == "warning" %}
-        <div class="card-header overlay-msg-warning-header">
-          Warning
-          <button class="btn-close float-end overlay-msg-close" type="button" aria-label="Close"></button>
-        </div>
-        {% elif message.level == "success" %}
-        <div class="card-header overlay-msg-success-header">
-          Success
-          <button class="btn-close float-end overlay-msg-close" type="button" aria-label="Close"></button>
-        </div>
-        {% else %}
-        <div class="card-header overlay-msg-info-header">
-          Success
-          <button class="btn-close float-end overlay-msg-close" type="button" aria-label="Close"></button>
-        </div>
-        {% endif %}
-        <div class="card-body">
-          <p class="card-text">{{ message }}</p>
-        </div>
+  <div class="position-fixed start-50 bottom-0 w-40 translate-middle-x overlay-msg">
+    {% for message in messages %}
+    <div class="card">
+      {% if message.level == "danger" %}
+      <div class="card-header overlay-msg-danger-header">
+        Error
+        <button class="btn-close float-end overlay-msg-close" type="button" aria-label="Close"></button>
       </div>
-      {% endfor %}
+      {% elif message.level == "warning" %}
+      <div class="card-header overlay-msg-warning-header">
+        Warning
+        <button class="btn-close float-end overlay-msg-close" type="button" aria-label="Close"></button>
+      </div>
+      {% elif message.level == "success" %}
+      <div class="card-header overlay-msg-success-header">
+        Success
+        <button class="btn-close float-end overlay-msg-close" type="button" aria-label="Close"></button>
+      </div>
+      {% else %}
+      <div class="card-header overlay-msg-info-header">
+        Success
+        <button class="btn-close float-end overlay-msg-close" type="button" aria-label="Close"></button>
+      </div>
+      {% endif %}
+      <div class="card-body">
+        <p class="card-text">{{ message }}</p>
+      </div>
     </div>
+    {% endfor %}
+  </div>
 
   <!-- PAGE MAIN -->
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
