@@ -3,6 +3,7 @@ import scipy
 import soundfile
 import os
 import tempfile
+import re
 
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -20,6 +21,8 @@ from gpt4all import GPT4All
 import speech_recognition as sr
 from transformers import AutoProcessor, BarkModel
 from speech_recognition.exceptions import UnknownValueError
+
+from language.models import LanguageModel
 
 
 # Create your views here.
@@ -182,12 +185,24 @@ class ChatMainAjax(View):
         print(input)
 
         # Text generation
-
-        model = GPT4All("orca-mini-3b-gguf2-q4_0.gguf")
+        model_record = LanguageModel.objects.filter(type=LanguageModel.CHOICE_GPT4ALL, file__isnull=False, is_default=True)
+        if not model_record.exists():
+          model_record = LanguageModel.objects.filter(type=LanguageModel.CHOICE_GPT4ALL, file__isnull=False)
+        if not model_record.exists():
+          return JsonResponse({'error': 'No valid language model found!'}, status=400)
+        model_record = model_record[0]
+        model_path = model_record.file
+        if not model_path:
+          return JsonResponse({'error': 'No language model found at specified path!'}, status=400)
+        model_path = re.sub(r'\\{2,}', r'\\\\', model_path)
+        model_path = os.path.join("E:", os.sep, 'VsCodeProjects', 'shaberu', 'files', 'system', 'models', 'gpt4all-falcon-q4_0.gguf')
+        model_dir = os.path.dirname(model_path)
+        model_file = os.path.basename(model_path)
+        model = GPT4All(model_file, model_path=model_dir, allow_download=False, device='gpu')
         output = model.generate(input)
-        print(output)
         data = {'result': output}
-        return JsonResponse(data)
+        return JsonResponse(data, status=200)
+
 
 class ChatRowAjax(View):
     
