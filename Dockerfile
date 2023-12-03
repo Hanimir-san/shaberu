@@ -13,6 +13,7 @@ COPY . .
 
 # running migrations
 RUN python manage.py migrate
+RUN python manage.py collectstatic
 
 # gunicorn
 CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
