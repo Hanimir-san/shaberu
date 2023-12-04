@@ -195,10 +195,10 @@ class ChatMainAjax(View):
         if not model_path:
           return JsonResponse({'error': 'No language model found at specified path!'}, status=400)
         model_path = re.sub(r'\\{2,}', r'\\\\', model_path)
-        model_path = os.path.join("E:", os.sep, 'VsCodeProjects', 'shaberu', 'files', 'system', 'models', 'gpt4all-falcon-q4_0.gguf')
+        # model_path = os.path.join("E:", os.sep, 'VsCodeProjects', 'shaberu', 'files', 'system', 'models', 'gpt4all-falcon-q4_0.gguf')
         model_dir = os.path.dirname(model_path)
         model_file = os.path.basename(model_path)
-        model = GPT4All(model_file, model_path=model_dir, allow_download=False, device='gpu')
+        model = GPT4All(os.sep + model_file, model_path=model_dir, allow_download=False, device='gpu')
         output = model.generate(input)
         data = {'result': output}
         return JsonResponse(data, status=200)
