@@ -5,8 +5,8 @@ services:
     image: postgres:latest
     restart: always
     environment:
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
     ports:
     - "5432:5432"
     volumes:
@@ -14,12 +14,18 @@ services:
   app:
     container_name: shaberu_app
     restart: always
+    environment:
+      - DB_HOST=shaberu_db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
     build: 
       context: .
       dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
     networks:
-      - db_network
-      - web_network
+      - shaberu_db_network
+      - shaberu_web_network
     depends_on:
       - db
   nginx:
@@ -31,9 +37,9 @@ services:
     volumes:
       - ./nginx:/etc/nginx/conf.d
     networks:
-      - web_network
+      - shaberu_web_network
     depends_on: 
-      - appseed-app
+      - app
 volumes:
   shaberu_db:
     driver: local
