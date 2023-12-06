@@ -22,7 +22,7 @@ services:
       - DB_PASSWORD=password
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-dev
     ports:
       - "8000:8000"
     networks:
