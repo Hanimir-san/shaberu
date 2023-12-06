@@ -24,6 +24,3 @@ RUN python manage.py collectstatic
 
 # gunicorn
 CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
-
-# start development server
-RUN python manage.py runserver
