@@ -31,7 +31,7 @@ if not SECRET_KEY:
 DEBUG = 'PRODUCTION' not in os.environ
 
 # Docker HOST
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', ]
 
 # Add here your deployment HOSTS
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085']
@@ -92,22 +92,22 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DB_ENGINE   = os.getenv('DB_ENGINE'   , 'postgresql')
-DB_USERNAME = os.getenv('DB_USERNAME' , 'postgres')
-DB_PASS     = os.getenv('DB_PASS'     , 'password')
-DB_HOST     = os.getenv('DB_HOST'     , 'localhost')
-DB_PORT     = os.getenv('DB_PORT'     , '5432')
-DB_NAME     = os.getenv('DB_NAME'     , 'postgres')
+DB_ENGINE           = os.getenv('DB_ENGINE'         ,'postgresql')
+POSTGRES_DB         = os.getenv('POSTGRES_DB'       ,'postgres')
+POSTGRES_USER       = os.getenv('POSTGRES_USER'     ,'postgres')
+POSTGRES_PASSWORD   = os.getenv('POSTGRES_PASSWORD' ,'password')
+POSTGRES_HOST       = os.getenv('POSTGRES_HOST'     ,'localhost')
+POSTGRES_PORT       = os.getenv('POSTGRES_PORT'     ,'5432')
 
-if DB_ENGINE and DB_NAME and DB_USERNAME:
+if DB_ENGINE and POSTGRES_DB and POSTGRES_USER:
     DATABASES = { 
       'default': {
         'ENGINE'  : 'django.db.backends.' + DB_ENGINE, 
-        'NAME'    : DB_NAME,
-        'USER'    : DB_USERNAME,
-        'PASSWORD': DB_PASS,
-        'HOST'    : DB_HOST,
-        'PORT'    : DB_PORT,
+        'NAME'    : POSTGRES_DB,
+        'USER'    : POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST'    : POSTGRES_HOST,
+        'PORT'    : POSTGRES_PORT,
         }, 
     }
 else:
