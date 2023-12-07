@@ -9,14 +9,16 @@ ENV DEBUG "true"
 RUN apt-get update
 RUN apt-get install libasound-dev libportaudio2 libportaudiocpp0 portaudio19-dev -y
 
+# Create shaberu working directory
+RUN mkdir -p /var/shaberu
+WORKDIR /var/shaberu
+COPY . .
 
 # install python dependencies
 COPY requirements.txt .
 
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
 
 # running migrations
 RUN python manage.py migrate
