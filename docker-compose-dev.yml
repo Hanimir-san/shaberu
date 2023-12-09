@@ -26,7 +26,7 @@ services:
       - shaberu_db_network
       - shaberu_web_network
     volumes:
-      - shaberu_app:/var/shaberu
+      - .:/var/shaberu
       - shaberu_site:/usr/local/lib/python3.11/site-packages/
     depends_on:
       - db
