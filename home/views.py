@@ -5,6 +5,8 @@ import os
 import tempfile
 import re
 
+import torch
+
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 
@@ -182,7 +184,6 @@ class ChatMainAjax(View):
         if not request.headers.get('x-requested-with') == 'XMLHttpRequest': 
             return HttpResponseBadRequest()
         input = request.POST.get('chat-user-resp')
-        print(input)
 
         # Text generation
         model_record = LanguageModel.objects.filter(type=LanguageModel.CHOICE_GPT4ALL, file__isnull=False, is_default=True)
@@ -194,11 +195,10 @@ class ChatMainAjax(View):
         model_path = model_record.file
         if not model_path:
           return JsonResponse({'error': 'No language model found at specified path!'}, status=400)
-        model_path = re.sub(r'\\{2,}', r'\\\\', model_path)
-        # model_path = os.path.join("E:", os.sep, 'VsCodeProjects', 'shaberu', 'files', 'system', 'models', 'gpt4all-falcon-q4_0.gguf')
         model_dir = os.path.dirname(model_path)
         model_file = os.path.basename(model_path)
-        model = GPT4All(os.sep + model_file, model_path=model_dir, allow_download=False, device='gpu')
+        model_device = 'gpu' if torch.cuda.is_available() else 'cpu'
+        model = GPT4All(model_file, model_path=model_dir, allow_download=False, device=model_device)
         output = model.generate(input)
         data = {'result': output}
         return JsonResponse(data, status=200)
@@ -211,13 +211,10 @@ class ChatRowAjax(View):
             return HttpResponseBadRequest()
         user_resp = request.POST.get('chat-user-resp')
         bot_resp = request.POST.get('chat-bot-resp')
-        print(user_resp)
-        print(bot_resp)
 
         # Get row partial
         partial_ctx = {'user_resp': user_resp, 'bot_resp': bot_resp}
         partial_url = "pages/partials/chat-response-row.html"
         partial_render = render_to_string(partial_url, partial_ctx)
         data = {'result': partial_render}
-        print(data)
         return JsonResponse(data)
