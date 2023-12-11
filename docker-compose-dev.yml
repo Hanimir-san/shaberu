@@ -20,6 +20,7 @@ services:
       dockerfile: Dockerfile-dev
     env_file:
       - .env
+    command: ["bash", "/var/shaberu/docker-setup-dev.sh"]
     ports:
       - "8000:8000"
     networks:
