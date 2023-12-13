@@ -8,8 +8,8 @@
 {% block content %}
 
 <header class="header-2">
-  <div class="page-header min-vh-75 relative" style="background-image: url('{% static 'img/bg2.jpg' %}')">
-    <span class="mask bg-gradient-primary opacity-4"></span>
+  <div class="page-header min-vh-75 relative">
+    <span class="mask bg-gradient-secondary opacity-4"></span>
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto">
@@ -81,7 +81,7 @@
       </form>
     </div>
 
-    <div class="container" id="chat-resp-container">
+    <div class="container" id="chat-resp-container h-75">
     </div>
 
   </section>
@@ -92,19 +92,6 @@
 {% endblock content %}
 
 {% block javascripts %}
-
-<!--  Plugin for TypedJS, full documentation here: https://github.com/inorganik/CountUp.js -->
-<script src="{% static 'js/plugins/countup.min.js' %}"></script>
-<script src="{% static 'js/plugins/choices.min.js' %}"></script>
-<script src="{% static 'js/plugins/prism.min.js' %}"></script>
-<script src="{% static 'js/plugins/highlight.min.js' %}"></script>
-<!--  Plugin for Parallax, full documentation here: https://github.com/dixonandmoe/rellax -->
-<script src="{% static 'js/plugins/rellax.min.js' %}"></script>
-<!--  Plugin for TiltJS, full documentation here: https://gijsroge.github.io/tilt.js/ -->
-<script src="{% static 'js/plugins/tilt.min.js' %}"></script>
-<!--  Plugin for Selectpicker - ChoicesJS, full documentation here: https://github.com/jshjohnson/Choices -->
-<script src="{% static 'js/plugins/choices.min.js' %}"></script>
-
 
 <script type="text/javascript">
 
