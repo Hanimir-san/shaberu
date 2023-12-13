@@ -1,13 +1,27 @@
 FROM python:3.11.6-bookworm
 
-# set environment variables
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV DEBUG "true"
 
-# install environment depencencies
-RUN apt-get update
-RUN apt-get install libasound-dev libportaudio2 libportaudiocpp0 portaudio19-dev -y
+# Install base dependencies
+RUN apt update
+RUN apt install libc6-armhf-cross -y
+RUN ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.3 /usr/lib/ld-linux-armhf.so.3
+RUN ln -s /usr/arm-linux-gnueabihf/lib/libdl.so.2 /usr/lib/libdl.so.2
+RUN ln -s /usr/arm-linux-gnueabihf/lib/libpthread.so.0 /usr/lib/libpthread.so.0
+RUN ln -s /usr/arm-linux-gnueabihf/lib/libm.so.6 /usr/lib/libm.so.6
+RUN ln -s /usr/arm-linux-gnueabihf/lib/libc.so.6 /usr/lib/libc.so.6
+
+# Install audio dependencies
+RUN apt install libasound-dev libportaudio2 libportaudiocpp0 portaudio19-dev -y
+
+# Install sass compiler
+WORKDIR /opt/
+RUN wget https://github.com/sass/dart-sass/releases/download/1.69.5/dart-sass-1.69.5-linux-arm.tar.gz
+RUN tar -xf dart-sass-1.69.5-linux-arm.tar.gz
+RUN rm dart-sass-1.69.5-linux-arm.tar.gz
 
 # Create shaberu working directory
 RUN mkdir -p /var/shaberu

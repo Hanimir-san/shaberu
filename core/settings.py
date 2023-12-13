@@ -154,23 +154,56 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'pipeline.storage.PipelineManifestStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'pipeline.finders.PipelineFinder',
 )
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-# Media files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
-MEDIA_URL = '/files/'
-
 # Django pipeline configuration
 PIPELINE = dict()
-PIPELINE['PIPELINE_ENABLED'] = True
+
+PIPELINE['JAVASCRIPT'] = {
+        'core': {
+            'source_filenames': (
+              'js/core/*.js',
+            ),
+            'output_filename': 'js/core.js',
+        },
+        'theme': {
+            'source_filenames': (
+              'js/theme/*.js',
+            ),
+            'output_filename': 'js/theme.js',
+        },
+        'main': {
+            'source_filenames': (
+              'js/home/*.js',
+            ),
+            'output_filename': 'js/home.js',
+        },
+    }
+
+PIPELINE['STYLESHEETS'] = {
+        'theme': {
+            'source_filenames': (
+              'scss/material-kit.scss',
+              'css/theme/*.css',
+            ),
+            'output_filename': 'css/theme.css',
+        },
+        'main': {
+            'source_filenames': (
+              'scss/main/main.scss',
+            ),
+            'output_filename': 'css/main.css',
+        },
+    }
+
 PIPELINE['CSS_COMPRESSOR'] = 'pipeline.compressors.csshtmljsminify.CssHtmlJsMinifyCompressor'
 PIPELINE['JS_COMPRESSOR'] = 'pipeline.compressors.csshtmljsminify.CssHtmlJsMinifyCompressor'
 PIPELINE['MIMETYPES'] = (
@@ -181,6 +214,14 @@ PIPELINE['MIMETYPES'] = (
   ('text/x-scss', '.scss'),
   ('image/svg+xml', '.svg'),
 )
+PIPELINE['COMPILERS'] = (
+  'pipeline.compilers.sass.SASSCompiler',
+)
+PIPELINE['SASS_BINARY'] = 'sass'
+
+# Media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
+MEDIA_URL = '/files/'
 
 #if not DEBUG:
 #    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

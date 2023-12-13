@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PATH="/opt/dart-sass:$PATH"
+
 python manage.py migrate
 python manage.py collectstatic --no-input
 
